@@ -1,0 +1,11 @@
+--- a/nodes/EvolutionApi/execute/messages/sendText.js
++++ b/nodes/EvolutionApi/execute/messages/sendText.js
+@@ -53,7 +53,7 @@
+                 headers: {
+                     'Content-Type': 'application/json',
+                 },
+-                uri: `/manager/message/sendText/${instanceName}`,
++                uri: `/message/sendText/${instanceName}`,
+                 body,
+                 json: true,
+             }; 
