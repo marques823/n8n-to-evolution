@@ -30,6 +30,13 @@ x-shared: &shared
     QUEUE_HEALTH_CHECK_ACTIVE: "true"
     N8N_COMMUNITY_NODES_ENABLED: "true"
     N8N_CUSTOM_API_CALL_ALLOWED_HOSTS: "localhost,evolution_api"
+    N8N_RUNNERS_ENABLED: "true"
+    OFFLOAD_MANUAL_EXECUTIONS_TO_WORKERS: "true"
+    WEBHOOK_TIMEOUT: "40000"  # 40 segundos
+    N8N_REDIS_STALLED_JOB_EXPIRATION: "1800"  # 30 minutos
+    N8N_QUEUE_BULL_MEMORY_MAX_JOB_PER_WORKER: "10"
+    N8N_QUEUE_BULL_DEAD_JOB_AFTER: "2000" # 2000 milissegundos
+    N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS: "true"
   depends_on:
     redis:
       condition: service_healthy
@@ -93,7 +100,9 @@ services:
 
   n8n-worker:
     <<: *shared
-    command: "/bin/sh -c 'sleep 5; n8n worker'"
+    entrypoint: n8n worker
+    volumes:
+      - "n8n_storage:/home/node/.n8n"
     depends_on:
       - "n8n"
 
